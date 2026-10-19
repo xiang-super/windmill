@@ -45,6 +45,7 @@
 	let restrictAnonymousAppDeployment = $state(hasRule('RestrictAnonymousAppDeployment'))
 	let restrictPublicRunSharing = $state(hasRule('RestrictPublicRunSharing'))
 	let restrictGuestAppDeployment = $state(hasRule('RestrictGuestAppDeployment'))
+	let requireIsolatedForks = $state(hasRule('RequireIsolatedForks'))
 	let allowOperatorForking = $state(hasRule('AllowOperatorForking'))
 	let selectedGroups = $state<string[]>(
 		untrack(() => rule)?.bypass_groups?.map((g) => g.replace('g/', '')) ?? []
@@ -61,6 +62,7 @@
 	let initialRestrictAnonymousAppDeployment = $state(hasRule('RestrictAnonymousAppDeployment'))
 	let initialRestrictPublicRunSharing = $state(hasRule('RestrictPublicRunSharing'))
 	let initialRestrictGuestAppDeployment = $state(hasRule('RestrictGuestAppDeployment'))
+	let initialRequireIsolatedForks = $state(hasRule('RequireIsolatedForks'))
 	let initialAllowOperatorForking = $state(hasRule('AllowOperatorForking'))
 	let initialSelectedGroups = $state<string[]>(
 		untrack(() => rule)?.bypass_groups
@@ -109,6 +111,7 @@
 					restrictAnonymousAppDeployment ||
 					restrictPublicRunSharing ||
 					restrictGuestAppDeployment ||
+					requireIsolatedForks ||
 					allowOperatorForking ||
 					selectedGroups.length > 0 ||
 					selectedUsers.length > 0
@@ -119,6 +122,7 @@
 					restrictAnonymousAppDeployment !== initialRestrictAnonymousAppDeployment ||
 					restrictPublicRunSharing !== initialRestrictPublicRunSharing ||
 					restrictGuestAppDeployment !== initialRestrictGuestAppDeployment ||
+					requireIsolatedForks !== initialRequireIsolatedForks ||
 					allowOperatorForking !== initialAllowOperatorForking ||
 					JSON.stringify([...selectedGroups].sort()) !==
 						JSON.stringify([...initialSelectedGroups].sort()) ||
@@ -160,6 +164,7 @@
 						...(restrictGuestAppDeployment
 							? ['RestrictGuestAppDeployment' as ProtectionRuleKind]
 							: []),
+						...(requireIsolatedForks ? ['RequireIsolatedForks' as ProtectionRuleKind] : []),
 						...(allowOperatorForking ? ['AllowOperatorForking' as ProtectionRuleKind] : [])
 					],
 					bypass_groups: selectedGroups,
@@ -200,6 +205,7 @@
 						...(restrictGuestAppDeployment
 							? ['RestrictGuestAppDeployment' as ProtectionRuleKind]
 							: []),
+						...(requireIsolatedForks ? ['RequireIsolatedForks' as ProtectionRuleKind] : []),
 						...(allowOperatorForking ? ['AllowOperatorForking' as ProtectionRuleKind] : [])
 					],
 					bypass_groups: selectedGroups,
@@ -217,6 +223,7 @@
 			initialRestrictAnonymousAppDeployment = restrictAnonymousAppDeployment
 			initialRestrictPublicRunSharing = restrictPublicRunSharing
 			initialRestrictGuestAppDeployment = restrictGuestAppDeployment
+			initialRequireIsolatedForks = requireIsolatedForks
 			initialAllowOperatorForking = allowOperatorForking
 			initialSelectedGroups = clone(selectedGroups)
 			initialSelectedUsers = clone(selectedUsers)
@@ -303,12 +310,18 @@
 				{@render description('Users cannot create forks of this workspace.')}
 			</div>
 			<div class="flex flex-col gap-1">
+				<Toggle bind:checked={requireIsolatedForks} options={{ right: 'Require isolated forks' }} />
+				{@render description(
+					"Forks of this workspace cannot share its data: every object storage and ducklake stays isolated, and every data table is cloned instead of pointing at this workspace's database."
+				)}
+			</div>
+			<div class="flex flex-col gap-1">
 				<Toggle
 					bind:checked={allowOperatorForking}
 					options={{ right: 'Allow operators to fork' }}
 				/>
 				{@render description(
-					"Operators cannot fork a workspace unless a ruleset turns this on. It applies to every operator, whatever the bypass list says. An operator who forks is a developer in the fork and counts as a developer seat. There they can run any code, including against this workspace's data tables and shared ducklakes, which the fork uses directly. They still cannot deploy scripts, flows or apps back to this workspace."
+					"Operators cannot fork a workspace unless a ruleset turns this on. It applies to every operator, whatever the bypass list says. An operator who forks is a developer in the fork and counts as a developer seat. There they can run any code, including against this workspace's data tables and shared ducklakes, which the fork uses directly unless isolated forks are required. They still cannot deploy scripts, flows or apps back to this workspace."
 				)}
 			</div>
 			<div class="flex flex-col gap-1">

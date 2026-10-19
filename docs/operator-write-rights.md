@@ -136,6 +136,7 @@ with the user's role in the parent, where the operator write checks refuse it, s
 `wm_deployers` member deploys them instead. Data is not behind that check: a data table kept on fork
 (`KeepOriginal`, the default) is a pointer at the parent's database, and a `Shared` ducklake writes
 the parent's lake, so code in the fork reads and writes the parent's data directly. The ruleset
-toggle's help text says so; an admin who turns it on accepts it. The developer row also costs a
+toggle's help text says so; an admin who turns it on accepts it, or also turns on
+`RequireIsolatedForks` (`docs/fork-object-storage.md`), which binds operators too. The developer row also costs a
 seat: the self-hosted seat count takes a user who is a developer in any workspace, forks included,
 as a full seat.
