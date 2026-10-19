@@ -10307,8 +10307,9 @@ async fn write_workspace_fork(
     // Ensure the creator is a member of the fork even without copy_members (or if they aren't a parent
     // member). No-op when copy_members already brought their full row. `operator` is left at its
     // false default on purpose: an operator allowed by `AllowOperatorForking` develops in the fork.
-    // That includes writing the parent's kept data tables and shared ducklakes, which the fork
-    // reaches directly; only item deploys back run with their parent role and are refused.
+    // That includes writing the parent's kept data tables and shared object storage and ducklakes,
+    // which the fork reaches directly; only item deploys back run with their parent role and are
+    // refused.
     sqlx::query!(
         "INSERT INTO usr
            (workspace_id, email, username, is_admin)
