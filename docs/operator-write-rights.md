@@ -134,8 +134,8 @@ An operator who forks is a developer in the fork: the creator row copies only `i
 the rule grants an operator arbitrary code execution. Deploying scripts, flows and apps back runs
 with the user's role in the parent, where the operator write checks refuse it, so an admin or a
 `wm_deployers` member deploys them instead. Data is not behind that check: a data table kept on fork
-(`KeepOriginal`, the default) is a pointer at the parent's database, and a `Shared` ducklake writes
-the parent's lake, so code in the fork reads and writes the parent's data directly. The ruleset
+(`KeepOriginal`, the default) is a pointer at the parent's database, and a shared object storage or
+ducklake writes the parent's, so code in the fork reads and writes the parent's data directly. The ruleset
 toggle's help text says so; an admin who turns it on accepts it, or also turns on
 `RequireIsolatedForks` (`docs/fork-object-storage.md`), which binds operators too. The developer row also costs a
 seat: the self-hosted seat count takes a user who is a developer in any workspace, forks included,

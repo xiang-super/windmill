@@ -321,7 +321,7 @@
 					options={{ right: 'Allow operators to fork' }}
 				/>
 				{@render description(
-					"Operators cannot fork a workspace unless a ruleset turns this on. It applies to every operator, whatever the bypass list says. An operator who forks is a developer in the fork and counts as a developer seat. There they can run any code, including against this workspace's data tables and shared ducklakes, which the fork uses directly unless isolated forks are required. They still cannot deploy scripts, flows or apps back to this workspace."
+					"Operators cannot fork a workspace unless a ruleset turns this on. It applies to every operator, whatever the bypass list says. An operator who forks is a developer in the fork and counts as a developer seat. There they can run any code, including against this workspace's data tables and any object storage or ducklakes shared with the fork, which it uses directly unless isolated forks are required. They still cannot deploy scripts, flows or apps back to this workspace."
 				)}
 			</div>
 			<div class="flex flex-col gap-1">
